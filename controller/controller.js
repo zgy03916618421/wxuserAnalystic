@@ -10,8 +10,8 @@ exports.wxOuath = function *() {
     var timestamp = this.query.timestamp;
     var nonce = this.query.nonce;
     var isCheck = S.wxcheckSignature(signature,timestamp,nonce);
-    if (isCheck) yield this.body = echostr;
-    else yield this.body = 'failed';
+    if (isCheck) this.body = echostr;
+    else this.body = 'failed';
 }
 exports.wxPost = function *() {
     var xml = this.request.body;
