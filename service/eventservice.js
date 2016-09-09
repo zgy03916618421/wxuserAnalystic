@@ -22,7 +22,7 @@ function *subscribe(content,token) {
         userinfo.status = 'enable';
         mongodb.collection('test').insertOne(userinfo);
     }else{
-        mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'enable','createtime':userinfo.subscribetime}});
+        mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'enable','subscribetime':new Date().toLocaleString()}});
     }
 }
 function *unsubscribe(content) {
