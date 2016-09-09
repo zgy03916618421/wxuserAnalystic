@@ -4,7 +4,8 @@
 var wxAPI = require('./wxapiservice');
 var envet = {
     subscribe : subscribe,
-    unsubscribe : unsubscribe
+    unsubscribe : unsubscribe,
+    click : click
 }
 exports.eventHandle = function *(postBody,token) {
     var type = postBody.xml.Event[0];
@@ -29,4 +30,7 @@ function *unsubscribe(content) {
     var openid = content.xml.FromUserName[0];
     var updatetime = new Date().toLocaleString();
     mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'disable','createtime':updatetime}});
+}
+function  *click() {
+
 }

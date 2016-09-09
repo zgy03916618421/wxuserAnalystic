@@ -26,7 +26,7 @@ app.use(function *(next) {
         var tokenres = yield HttpUtils.request(opts);
         token = JSON.parse(tokenres).access_token;
         yield redisTemplates.set("wechat_accesstoken",token);
-        yield redisTemplates.expire('wechat_accesstoken',6900);
+        yield redisTemplates.expire('wechat_accesstoken',3600);
     }
     this.request.token = token;
     yield next;
