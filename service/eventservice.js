@@ -21,15 +21,21 @@ function *subscribe(content,token) {
         userinfo.createtime = new Date().toLocaleString();
         userinfo.subscribetime = new Date(parseInt(userinfo.subscribe_time)*1000).toLocaleString();
         userinfo.status = 'enable';
-        mongodb.collection('test').insertOne(userinfo);
+        mongodb.collection('test').insertOne(userinfo,function () {
+            mongodb.close();
+        });
     }else{
-        mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'enable','subscribetime':new Date().toLocaleString()}});
+        mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'enable','subscribetime':new Date().toLocaleString()}},function () {
+            mongodb.close();
+        });
     }
 }
 function *unsubscribe(content) {
     var openid = content.xml.FromUserName[0];
     var updatetime = new Date().toLocaleString();
-    mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'disable','createtime':updatetime}});
+    mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'disable','createtime':updatetime}},function () {
+        mongodb.close();
+    });
 }
 function  *click() {
 
