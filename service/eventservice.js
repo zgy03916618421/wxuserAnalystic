@@ -3,9 +3,12 @@
  */
 var wxAPI = require('./wxapiservice');
 var envet = {
-    subscribe : subscribe,
-    unsubscribe : unsubscribe,
-    click : click
+    'subscribe' : subscribe,
+    'unsubscribe' : unsubscribe,
+    'CLICK' : click,
+    'VIEW' : view,
+    'LOCATION' : location,
+    'SCAN' : scan
 }
 exports.eventHandle = function *(postBody,token) {
     var type = postBody.xml.Event[0];
@@ -39,4 +42,13 @@ function *unsubscribe(content) {
 }
 function  *click() {
 
+}
+function *view() {
+
+}
+function *location() {
+    
+}
+function *scan() {
+    
 }
