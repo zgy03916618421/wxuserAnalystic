@@ -13,7 +13,7 @@ require('./middleware/connectRedis');
 var app = koa();
 app.use(function *(next) {
     var token = yield redisTemplates.get("wechat_accesstoken");
-    if (token == null){
+    /*if (token == null){
         var opts = {
             'method' : 'GET',
             'url' : 'https://api.weixin.qq.com/cgi-bin/token',
@@ -27,7 +27,7 @@ app.use(function *(next) {
         token = JSON.parse(tokenres).access_token;
         yield redisTemplates.set("wechat_accesstoken",token);
         yield redisTemplates.expire('wechat_accesstoken',3600);
-    }
+    }*/
     this.request.token = token;
     yield next;
 });
