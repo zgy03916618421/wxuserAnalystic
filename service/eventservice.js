@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/8/30.
  */
 var wxAPI = require('./wxapiservice');
-var redisTemplates = require('./db/redisTemplate');
+var redisTemplates = require('../db/redisTemplate');
 var envet = {
     'subscribe' : subscribe,
     'unsubscribe' : unsubscribe,
