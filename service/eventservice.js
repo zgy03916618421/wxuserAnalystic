@@ -2,6 +2,7 @@
  * Created by Administrator on 2016/8/30.
  */
 var wxAPI = require('./wxapiservice');
+var redisTemplates = require('./db/redisTemplate');
 var envet = {
     'subscribe' : subscribe,
     'unsubscribe' : unsubscribe,
@@ -21,6 +22,12 @@ function *subscribe(content,token) {
     var docs = yield mongodb.collection('test').find({'openid':openid}).toArray();
     if(docs.length == 0){
         var userinfo = yield wxAPI.getUserInfo(openid,token);
+        if(userinfo.errcode == 40001){
+            token = yield wxAPI.getwxToken();
+            yield redisTemplates.set("wechat_accesstoken",token);
+            yield redisTemplates.expire('wechat_accesstoken',3600);
+            userinfo = yield wxAPI.getUserInfo(openid,token);
+        }
         userinfo.createtime = new Date().toLocaleString();
         userinfo.subscribetime = new Date(parseInt(userinfo.subscribe_time)*1000).toLocaleString();
         userinfo.status = 'enable';
