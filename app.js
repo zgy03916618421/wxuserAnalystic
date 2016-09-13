@@ -9,7 +9,6 @@ var router = require('./router/router');
 var HttpUtils = require('./utils/HttpUtils');
 var redisTemplates = require('./db/redisTemplate');
 var MongClient = require('mongodb').MongoClient;
-var logger = require('koa-logger')
 require('./middleware/connectRedis');
 var app = koa();
 app.use(function *(next) {
