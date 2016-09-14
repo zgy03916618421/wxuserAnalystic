@@ -23,6 +23,7 @@ exports.wxPost = function *() {
             this.body = 'success';
             break
         case 'text':
+            yield textService.textHandle(xml,token);
             this.body = 'success';
             break;
         default:

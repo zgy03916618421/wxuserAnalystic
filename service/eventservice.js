@@ -17,8 +17,8 @@ exports.eventHandle = function *(postBody,token) {
 }
 function *subscribe(content,token) {
     var openid = content.xml.FromUserName[0];
-    var text = '你好';
-    var msg = yield wxAPI.sendMessage(openid,token,text)
+    var text = '终于等到你～记得每晚临睡前，来这里say 晚安哦';
+    var msg = yield wxAPI.sendMessage(openid,token,text);
     var docs = yield mongodb.collection('test').find({'openid':openid}).toArray();
     if(docs.length == 0){
         var userinfo = yield wxAPI.getUserInfo(openid,token);
