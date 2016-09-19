@@ -5,6 +5,7 @@ var S = require('../service/wxcheckservice');
 var eventService = require('../service/eventservice');
 var textService = require('../service/textserviec');
 var imageService= require('../service/imageservice');
+var voiceService = require('../service/voiceservice');
 exports.wxOuath = function *() {
     var echostr = this.query.echostr;
     var signature = this.query.signature;
@@ -29,6 +30,10 @@ exports.wxPost = function *() {
             break
         case 'image':
             yield imageService.imageHandle(xml,token);
+            this.body = 'success';
+            break
+        case  'voice':
+            yield voiceService.voiceHandle(xml,token);
             this.body = 'success';
             break
         default:
