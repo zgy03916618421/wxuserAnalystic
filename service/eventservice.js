@@ -3,7 +3,7 @@
  */
 var wxAPI = require('./wxapiservice');
 var redisTemplates = require('../db/redisTemplate');
-var envet = {
+var envet = { 
     'subscribe' : subscribe,
     'unsubscribe' : unsubscribe,
     'CLICK' : click,
@@ -17,10 +17,10 @@ exports.eventHandle = function *(postBody,token) {
 }
 function *subscribe(content,token) {
     var openid = content.xml.FromUserName[0];
-    var text = '终于等到你～记得每晚临睡前，来这里say 晚安哦';
+    var text = '嚯嚯，又来了一个骨骼清奇的人~波叔需要通过以书识人大法对你进行身份扫描，顺带送你几个灵魂伴侣，接好不谢！https://share.beautifulreading.com/bookface';
     var msg = yield wxAPI.sendMessage(openid,token,text);
-    var docs = yield mongodb.collection('test').find({'openid':openid}).toArray();
-    if(docs.length == 0){
+    //var docs = yield mongodb.collection('userInfo').find({'openid':openid}).toArray();
+   // if(docs.length == 0){
         var userinfo = yield wxAPI.getUserInfo(openid,token);
         if(userinfo.errcode == 40001){
             token = yield wxAPI.getwxToken();
@@ -28,23 +28,23 @@ function *subscribe(content,token) {
             yield redisTemplates.expire('wechat_accesstoken',3600);
             userinfo = yield wxAPI.getUserInfo(openid,token);
         }
-        userinfo.createtime = new Date().toLocaleString();
-        userinfo.subscribetime = new Date(parseInt(userinfo.subscribe_time)*1000).toLocaleString();
+        userinfo.createtime = new Date().format('yyyy-MM-dd hh:mm:ss');
+        userinfo.subscribetime = new Date(parseInt(userinfo.subscribe_time)*1000).format('yyyy-MM-dd hh:mm:ss');
         userinfo.status = 'enable';
-        mongodb.collection('test').insertOne(userinfo,function () {
-            mongodb.close();
+        mongodb.collection('userinfo').insertOne(userinfo,function () {
+            
         });
-    }else{
-        mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'enable','subscribetime':new Date().toLocaleString()}},function () {
-            mongodb.close();
-        });
-    }
+    //}else{
+     //   mongodb.collection('userInfo').updateOne({'openid':openid},{$set : {'status':'enable','subscribetime':new Date().toLocaleString()}},function () {
+           
+    //    });
+   // }
 }
 function *unsubscribe(content) {
     var openid = content.xml.FromUserName[0];
-    var updatetime = new Date().toLocaleString();
-    mongodb.collection('test').updateOne({'openid':openid},{$set : {'status':'disable','createtime':updatetime}},function () {
-        mongodb.close();
+    var updatetime = new Date().format('yyyy-MM-dd hh:mm:ss');
+    mongodb.collection('userinfo').updateOne({'openid':openid,'status':'enable'},{$set : {'status':'disable','createtime':updatetime}},function () {
+
     });
 }
 function  *click() {
@@ -58,4 +58,24 @@ function *location() {
 }
 function *scan() {
     
+}
+Date.prototype.format = function(format){
+    var o = {
+        "M+" : this.getMonth()+1, //month
+        "d+" : this.getDate(), //day
+        "h+" : this.getHours(), //hour
+        "m+" : this.getMinutes(), //minute
+        "s+" : this.getSeconds(), //second
+        "q+" : Math.floor((this.getMonth()+3)/3), //quarter
+        "S" : this.getMilliseconds() //millisecond
+    }
+    if(/(y+)/.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+    for(var k in o) {
+        if(new RegExp("("+ k +")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+        }
+    }
+    return format;
 }

@@ -3,17 +3,19 @@
  */
 var config = {
     redis : {
-        host : '192.168.100.2',
-        port : 6379
+        host: process.env.BS_REDISHOST || '192.168.100.2',
+        port : process.env.BS_REDISPORT || 6379
     },
     mongo : {
-        host : '192.168.100.2',
-        port : '27017',
-        db : 'wechatUser'
+        host: process.env.BS_MONGOHOST || '192.168.100.2',
+        port: process.env.BS_MONGOPORT || '27017',
+        db: process.env.BS_MONGODBNAME || 'wechatuser',
+        user : process.env.BS_MONGOUSER || 'wechatuser_reader',
+        pass : process.env.BS_MONGOPASS || 'N7SpSrzh'
     },
     weixin : {
-        appID : 'wxc1a121872c82fa58',
-        appsecret : 'c973205ec7f429f1c42d285d89284790'
+        appID : 'wx3c1e9fdd84a88826',
+        appsecret : '73544f42698c7564deeff273e9ae0091'
     }
 }
 module.exports = config;

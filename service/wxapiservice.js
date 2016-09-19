@@ -49,3 +49,12 @@ exports.getwxToken = function *() {
     var token = JSON.parse(tokenres).access_token;
     return token;
 }
+exports.getMdia = function *(token,mediaid) {
+    var opts = {
+        method : 'get',
+        url : 'https://api.weixin.qq.com/cgi-bin/media/get',
+        qs : {access_token:token,media_id :mediaid}
+    }
+    var result = yield httputil.request(opts);
+    return result
+}

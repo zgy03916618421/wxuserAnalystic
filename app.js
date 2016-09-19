@@ -8,8 +8,8 @@ var xmlParser = require('koa-xml-body').default;
 var router = require('./router/router');
 var HttpUtils = require('./utils/HttpUtils');
 var redisTemplates = require('./db/redisTemplate');
-var MongClient = require('mongodb').MongoClient;
 require('./middleware/connectRedis');
+require('./middleware/connectMongo');
 var app = koa();
 app.use(function *(next) {
     var token = yield redisTemplates.get("wechat_accesstoken");
@@ -31,12 +31,11 @@ app.use(function *(next) {
     this.request.token = token;
     yield next;
 });
-app.use(function *(next) {
-    global.mongodb = yield MongClient.connect('mongodb://192.168.100.2:27017/wechatUser');
-    yield next;
-})
+//app.use(function *(next) {
+//    global.mongodb = yield MongClient.connect('mongodb://192.168.100.2:27017/wechatUser');
+//    yield next;
+//})
 app.use(xmlParser());
 app.use(bodyParse());
 app.use(router.routes()).use(router.allowedMethods());
-require('./middleware/connectRedis');
 app.listen(10000);
