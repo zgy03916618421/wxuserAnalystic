@@ -16,7 +16,7 @@ exports.imageHandle = function *(postBody,token) {
         secret_key : 'JRqORkckw7iGjVedNJNSyO5ND-88EmWObL-gOYiU'
     })
     var Bucket = qiniu.bucket('zhougy');
-    var puttingStream = Bucket.createPutStream('wechat_test');
+    var puttingStream = Bucket.createPutStream(mediaid);
     request.get('https://api.weixin.qq.com/cgi-bin/media/get?access_token='+token+'&media_id='+mediaid).pipe(puttingStream)
         .on('error', function(err) {
             console.error(err);
