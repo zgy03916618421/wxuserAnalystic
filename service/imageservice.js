@@ -17,7 +17,7 @@ exports.imageHandle = function *(postBody,token) {
     })
     var Bucket = qiniu.bucket('zhougy');
     var puttingStream = Bucket.createPutStream('wechat_test');
-    request.get(url).pipe(puttingStream)
+    request.get('https://api.weixin.qq.com/cgi-bin/media/get?access_token='+token+'&media_id='+mediaid).pipe(puttingStream)
         .on('error', function(err) {
             console.error(err);
         })
