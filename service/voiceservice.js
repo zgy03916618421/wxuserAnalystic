@@ -12,7 +12,7 @@ exports.voiceHandle = function *(postBody,token) {
         secret_key : 'JRqORkckw7iGjVedNJNSyO5ND-88EmWObL-gOYiU'
     })
     var Bucket = qiniu.bucket('zhougy');
-    var puttingStream = Bucket.createPutStream(mediaid);
+    var puttingStream = Bucket.createPutStream(mediaid+'.mp4');
     request.get('https://api.weixin.qq.com/cgi-bin/media/get?access_token='+token+'&media_id='+mediaid).pipe(puttingStream)
         .on('error', function(err) {
             console.error(err);
