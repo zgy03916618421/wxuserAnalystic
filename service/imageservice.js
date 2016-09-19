@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/9/18.
  */
 var wxAPI = require('./wxapiservice');
-var qiniu = require('')
+var qiniu = require('node-qiniu')
 exports.imageHandle = function *(postBody,token) {
     var openid = postBody.xml.FromUserName[0];
     var url = postBody.xml.PicUrl[0];
