@@ -2,7 +2,7 @@
  * Created by Administrator on 2016/9/18.
  */
 var wxAPI = require('./wxapiservice');
-var qiniu = require('node-qiniu')
+var qiniu = require('')
 exports.imageHandle = function *(postBody,token) {
     var openid = postBody.xml.FromUserName[0];
     var url = postBody.xml.PicUrl[0];
@@ -16,7 +16,7 @@ exports.imageHandle = function *(postBody,token) {
         secret_key : 'JRqORkckw7iGjVedNJNSyO5ND-88EmWObL-gOYiU'
     })
     var Bucket = qiniu.bucket('zhougy');
-    var puttingStream = Bucket.imagesBucket.createPutStream('wechat_test');
+    var puttingStream = Bucket.createPutStream('wechat_test');
     img.pipe(puttingStream)
         .on('error', function(err) {
             console.error(err);
